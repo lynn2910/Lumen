@@ -58,8 +58,8 @@ class _GlobalLayoutState extends State<GlobalLayout> {
               padding: const EdgeInsets.fromLTRB(0, 16, 16, 0),
               child: ClipRRect(
                 borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(28),
-                  topRight: Radius.circular(28),
+                  topLeft: Radius.circular(16),
+                  topRight: Radius.circular(16),
                 ),
                 child: Container(
                   color: theme.colorScheme.surfaceContainerHigh,

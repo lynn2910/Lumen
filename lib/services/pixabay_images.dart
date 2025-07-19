@@ -8,9 +8,17 @@ import '../utils.dart' show buildUrlWithQueryParams;
 
 const baseUrl = "https://pixabay.com/api";
 
-Future<PixabayResponse> fetchPhotos([String? search]) async {
+Future<PixabayResponse> fetchPhotos({
+  String? search,
+  int? perPage,
+  bool? editorsChoice,
+}) async {
   var params = {'key': PIXABAY_KEY};
   if (search != null) params["search"] = search;
+  if (perPage != null) params["per_page"] = perPage.toString();
+  if (editorsChoice != null) {
+    params['editors_choice'] = editorsChoice.toString();
+  }
 
   final url = buildUrlWithQueryParams(baseUrl, params);
 

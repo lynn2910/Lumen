@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:lumen/pages/HomePage.dart';
+import 'package:lumen/pages/root/home_page.dart';
 import 'package:lumen/pages/global_layout.dart';
 import 'package:lumen/pages/root/albums_page.dart';
 import 'package:lumen/pages/root/details_page.dart';
