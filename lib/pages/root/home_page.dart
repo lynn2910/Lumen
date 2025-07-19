@@ -164,7 +164,9 @@ class _HomePageState extends State<HomePage> {
                             },
                             icon: const Icon(Icons.favorite_outline),
                             style: IconButton.styleFrom(
-                              backgroundColor: theme.colorScheme.surfaceVariant
+                              backgroundColor: theme
+                                  .colorScheme
+                                  .surfaceContainerHighest
                                   .withValues(alpha: 0.7),
                               foregroundColor:
                                   theme.colorScheme.onSurfaceVariant,
