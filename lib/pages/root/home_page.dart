@@ -69,26 +69,20 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // Initial loading state before any images are loaded
     if (shownImages.isEmpty && isAddingPhotoLoading) {
       return const Center(child: CircularProgressIndicator());
     }
 
     var theme = Theme.of(context);
 
-    // Define your ButtonStyle objects
     final ButtonStyle defaultButtonStyle = ElevatedButton.styleFrom(
       backgroundColor: theme.colorScheme.primary,
-      // Using primary for a more distinct color
       foregroundColor: theme.colorScheme.onPrimary,
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
       textStyle: theme.textTheme.labelLarge?.copyWith(
-        fontWeight: FontWeight.bold, // Example: make text bold
+        fontWeight: FontWeight.bold,
       ),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20.0), // More rounded corners
-      ),
-      elevation: 5, // Add some shadow
+      elevation: 5,
     );
 
     final ButtonStyle disabledButtonStyle = ElevatedButton.styleFrom(
@@ -96,25 +90,18 @@ class _HomePageState extends State<HomePage> {
       foregroundColor: theme.colorScheme.onSurfaceVariant,
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
       textStyle: theme.textTheme.labelLarge,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-      elevation: 0, // No shadow when disabled
+      elevation: 0,
     );
 
-    // Determine if there are more photos to load
     final bool canLoadMore = shownImages.length < totalHits;
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Scrollbar(
-        // Added Scrollbar widget
         interactive: true,
-        // Make it interactive
         thumbVisibility: true,
-        // Always show the scrollbar thumb
         thickness: 8.0,
-        // Make it thicker
         radius: const Radius.circular(10.0),
-        // Rounded corners for the thumb
         child: ListView(
           children: [
             MasonryGridView.count(
@@ -123,7 +110,7 @@ class _HomePageState extends State<HomePage> {
               crossAxisSpacing: 8.0,
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              // ListView handles scrolling
+
               itemCount: shownImages.length,
               itemBuilder: (BuildContext context, int index) {
                 final photo = shownImages[index];
@@ -152,16 +139,12 @@ class _HomePageState extends State<HomePage> {
                                                 loadingProgress
                                                     .expectedTotalBytes!
                                           : null,
-                                      color: theme
-                                          .colorScheme
-                                          .primary, // Match theme
+                                      color: theme.colorScheme.primary,
                                     ),
                                     const SizedBox(height: 10),
                                     Text(
                                       "Chargement en cours...",
-                                      style: theme
-                                          .textTheme
-                                          .bodySmall, // Use theme text style
+                                      style: theme.textTheme.bodySmall,
                                     ),
                                   ],
                                 ),
@@ -182,8 +165,7 @@ class _HomePageState extends State<HomePage> {
                             icon: const Icon(Icons.favorite_outline),
                             style: IconButton.styleFrom(
                               backgroundColor: theme.colorScheme.surfaceVariant
-                                  .withOpacity(0.7),
-                              // Semi-transparent background
+                                  .withValues(alpha: 0.7),
                               foregroundColor:
                                   theme.colorScheme.onSurfaceVariant,
                             ),
