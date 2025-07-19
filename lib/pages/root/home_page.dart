@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:lumen/services/favorite.dart';
 import 'package:lumen/services/pixabay_image.dart';
-import 'package:lumen/services/pixabay_images.dart';
+import 'package:lumen/services/pixabay_images.service.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:provider/provider.dart';
+
+import '../../states/favorites.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -95,6 +99,8 @@ class _HomePageState extends State<HomePage> {
 
     final bool canLoadMore = shownImages.length < totalHits;
 
+    final favoriteImages = Provider.of<FavoriteImages>(context);
+
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Scrollbar(
@@ -103,6 +109,7 @@ class _HomePageState extends State<HomePage> {
         thickness: 8.0,
         radius: const Radius.circular(10.0),
         child: ListView(
+          primary: true,
           children: [
             MasonryGridView.count(
               crossAxisCount: 4,
@@ -159,10 +166,40 @@ class _HomePageState extends State<HomePage> {
                             AlignmentGeometry.xy(-0.05, 0.05),
                           ),
                           child: IconButton.filledTonal(
-                            onPressed: () {
-                              // TODO favoris
+                            onPressed: () async {
+                              if (favoriteImages.isFavorite(photo.id)) {
+                                favoriteImages.removeByImageId(photo.id);
+
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    showCloseIcon: true,
+                                    content: Text(
+                                      'Image supprimée des favoris!',
+                                    ),
+                                  ),
+                                );
+                              } else {
+                                FavoriteItem item = FavoriteItem(
+                                  imageId: photo.id,
+                                  tags: photo.tags,
+                                  pageURL: photo.pageURL,
+                                  isLowQuality: photo.isLowQuality,
+                                  isAiGenerated: photo.isAiGenerated,
+                                );
+
+                                favoriteImages.add(item);
+
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    showCloseIcon: true,
+                                    content: Text('Image ajoutée aux favoris!'),
+                                  ),
+                                );
+                              }
                             },
-                            icon: const Icon(Icons.favorite_outline),
+                            icon: favoriteImages.isFavorite(photo.id)
+                                ? const Icon(Icons.favorite)
+                                : const Icon(Icons.favorite_outline),
                             style: IconButton.styleFrom(
                               backgroundColor: theme
                                   .colorScheme
