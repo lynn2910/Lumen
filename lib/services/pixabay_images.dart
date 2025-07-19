@@ -12,10 +12,12 @@ Future<PixabayResponse> fetchPhotos({
   String? search,
   int? perPage,
   bool? editorsChoice,
+  int? page,
 }) async {
   var params = {'key': PIXABAY_KEY};
   if (search != null) params["search"] = search;
   if (perPage != null) params["per_page"] = perPage.toString();
+  if (page != null) params["page"] = page.toString();
   if (editorsChoice != null) {
     params['editors_choice'] = editorsChoice.toString();
   }
