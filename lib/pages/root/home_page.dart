@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lumen/models/display_image.dart';
 import 'package:lumen/services/pixabay_image.dart';
 import 'package:lumen/services/pixabay_images.service.dart';
 import 'package:lumen/widgets/images_grid_view.dart';
@@ -104,7 +105,12 @@ class _HomePageState extends State<HomePage> {
         child: ListView(
           primary: true,
           children: [
-            ImagesGridView(shownImages: shownImages, theme: theme),
+            ImagesGridView(
+              shownImages: shownImages.map((i) {
+                return DisplayImage.fromPixabayImage(i);
+              }).toList(),
+              theme: theme,
+            ),
 
             const SizedBox(height: 20.0),
 

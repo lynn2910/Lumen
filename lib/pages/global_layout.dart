@@ -55,7 +55,7 @@ class _GlobalLayoutState extends State<GlobalLayout> {
           ),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(0, 16, 16, 0),
+              padding: const EdgeInsets.only(top: 16, right: 16),
               child: ClipRRect(
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(16),

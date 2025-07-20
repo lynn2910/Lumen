@@ -10,9 +10,13 @@ class FavoriteItem {
   late int imageId;
 
   late List<String> tags;
+  late int width;
+  late int height;
 
   @Name('page_url')
   late String pageURL;
+  @Name('image_url')
+  late String imageURL;
 
   @Name('is_low_quality')
   late int isLowQuality;
@@ -27,8 +31,11 @@ class FavoriteItem {
     required this.imageId,
     required this.tags,
     required this.pageURL,
+    required this.imageURL,
     required this.isLowQuality,
     required this.isAiGenerated,
     required this.added,
+    required this.width,
+    required this.height,
   });
 }

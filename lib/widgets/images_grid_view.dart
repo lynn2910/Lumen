@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:lumen/models/display_image.dart';
 import 'package:provider/provider.dart';
 
 import '../services/favorite.dart';
@@ -7,7 +8,7 @@ import '../services/pixabay_image.dart';
 import '../states/favorites.dart';
 
 class ImagesGridView extends StatefulWidget {
-  final List<PixabayImage> shownImages;
+  final List<DisplayImage> shownImages;
   final ThemeData theme;
 
   const ImagesGridView({
@@ -23,7 +24,7 @@ class ImagesGridView extends StatefulWidget {
 class _ImagesGridViewState extends State<ImagesGridView> {
   @override
   Widget build(BuildContext context) {
-    final List<PixabayImage> shownImages = widget.shownImages;
+    final List<DisplayImage> shownImages = widget.shownImages;
     final ThemeData theme = widget.theme;
     final favoriteImages = Provider.of<FavoriteImages>(context);
 
@@ -40,12 +41,12 @@ class _ImagesGridViewState extends State<ImagesGridView> {
         return ClipRRect(
           borderRadius: BorderRadius.circular(8.0),
           child: AspectRatio(
-            aspectRatio: photo.webformatWidth / photo.webformatHeight,
+            aspectRatio: photo.width / photo.height,
             child: Stack(
               children: [
                 Positioned.fill(
                   child: Image.network(
-                    photo.webformatURL,
+                    photo.photoUrl,
                     fit: BoxFit.cover,
                     loadingBuilder: (context, child, loadingProgress) {
                       if (loadingProgress == null) return child;
@@ -92,8 +93,11 @@ class _ImagesGridViewState extends State<ImagesGridView> {
                         FavoriteItem item = FavoriteItem(
                           imageId: photo.id,
                           tags: photo.tags,
-                          pageURL: photo.pageURL,
-                          isLowQuality: photo.isLowQuality,
+                          pageURL: photo.pageUrl,
+                          imageURL: photo.photoUrl,
+                          width: photo.width,
+                          height: photo.height,
+                          isLowQuality: photo.isLowQuality ? 1 : 0,
                           isAiGenerated: photo.isAiGenerated,
                           added: DateTime.now(),
                         );
