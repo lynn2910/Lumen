@@ -4,7 +4,6 @@ import 'package:lumen/app_router.dart';
 import 'package:lumen/services/isar.dart';
 import 'package:lumen/states/favorites.dart';
 import 'package:provider/provider.dart';
-import 'package:lumen/services/favorite.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

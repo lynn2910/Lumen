@@ -185,6 +185,7 @@ class _HomePageState extends State<HomePage> {
                                   pageURL: photo.pageURL,
                                   isLowQuality: photo.isLowQuality,
                                   isAiGenerated: photo.isAiGenerated,
+                                  added: DateTime.now(),
                                 );
 
                                 favoriteImages.add(item);

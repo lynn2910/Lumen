@@ -20,11 +20,15 @@ class FavoriteItem {
   @Name('is_ai_generated')
   late bool isAiGenerated;
 
+  @Name("added_time")
+  late DateTime added;
+
   FavoriteItem({
     required this.imageId,
     required this.tags,
     required this.pageURL,
     required this.isLowQuality,
     required this.isAiGenerated,
+    required this.added,
   });
 }
