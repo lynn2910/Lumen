@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:lumen/services/favorite.dart';
 import 'package:lumen/services/pixabay_image.dart';
 import 'package:lumen/services/pixabay_images.service.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:provider/provider.dart';
-
-import '../../states/favorites.dart';
+import 'package:lumen/widgets/images_grid_view.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -32,7 +28,6 @@ class _HomePageState extends State<HomePage> {
   Future<void> loadPhotos() async {
     if (isAddingPhotoLoading) return;
 
-    // Prevent loading more if we've already loaded all available photos
     if (totalHits > 0 && shownImages.length >= totalHits) {
       return;
     }
@@ -99,8 +94,6 @@ class _HomePageState extends State<HomePage> {
 
     final bool canLoadMore = shownImages.length < totalHits;
 
-    final favoriteImages = Provider.of<FavoriteImages>(context);
-
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Scrollbar(
@@ -111,112 +104,7 @@ class _HomePageState extends State<HomePage> {
         child: ListView(
           primary: true,
           children: [
-            MasonryGridView.count(
-              crossAxisCount: 4,
-              mainAxisSpacing: 8.0,
-              crossAxisSpacing: 8.0,
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-
-              itemCount: shownImages.length,
-              itemBuilder: (BuildContext context, int index) {
-                final photo = shownImages[index];
-                return ClipRRect(
-                  borderRadius: BorderRadius.circular(8.0),
-                  child: AspectRatio(
-                    aspectRatio: photo.webformatWidth / photo.webformatHeight,
-                    child: Stack(
-                      children: [
-                        Positioned.fill(
-                          child: Image.network(
-                            photo.webformatURL,
-                            fit: BoxFit.cover,
-                            loadingBuilder: (context, child, loadingProgress) {
-                              if (loadingProgress == null) return child;
-                              return Center(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    CircularProgressIndicator(
-                                      value:
-                                          loadingProgress.expectedTotalBytes !=
-                                              null
-                                          ? loadingProgress
-                                                    .cumulativeBytesLoaded /
-                                                loadingProgress
-                                                    .expectedTotalBytes!
-                                          : null,
-                                      color: theme.colorScheme.primary,
-                                    ),
-                                    const SizedBox(height: 10),
-                                    Text(
-                                      "Chargement en cours...",
-                                      style: theme.textTheme.bodySmall,
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
-                            errorBuilder: (context, error, stackTrace) =>
-                                const Center(child: Icon(Icons.broken_image)),
-                          ),
-                        ),
-                        Align(
-                          alignment: Alignment.topRight.add(
-                            AlignmentGeometry.xy(-0.05, 0.05),
-                          ),
-                          child: IconButton.filledTonal(
-                            onPressed: () async {
-                              if (favoriteImages.isFavorite(photo.id)) {
-                                favoriteImages.removeByImageId(photo.id);
-
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    showCloseIcon: true,
-                                    content: Text(
-                                      'Image supprimée des favoris!',
-                                    ),
-                                  ),
-                                );
-                              } else {
-                                FavoriteItem item = FavoriteItem(
-                                  imageId: photo.id,
-                                  tags: photo.tags,
-                                  pageURL: photo.pageURL,
-                                  isLowQuality: photo.isLowQuality,
-                                  isAiGenerated: photo.isAiGenerated,
-                                  added: DateTime.now(),
-                                );
-
-                                favoriteImages.add(item);
-
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    showCloseIcon: true,
-                                    content: Text('Image ajoutée aux favoris!'),
-                                  ),
-                                );
-                              }
-                            },
-                            icon: favoriteImages.isFavorite(photo.id)
-                                ? const Icon(Icons.favorite)
-                                : const Icon(Icons.favorite_outline),
-                            style: IconButton.styleFrom(
-                              backgroundColor: theme
-                                  .colorScheme
-                                  .surfaceContainerHighest
-                                  .withValues(alpha: 0.7),
-                              foregroundColor:
-                                  theme.colorScheme.onSurfaceVariant,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              },
-            ),
+            ImagesGridView(shownImages: shownImages, theme: theme),
 
             const SizedBox(height: 20.0),
 
